@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Learning HTML5 Canvas</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+    
+    <link href="css/codemirror.css" rel="stylesheet">
+    
+    <style type="text/css">
+      .CodeMirror {
+        border: 1px solid #aaa;
+        height: 600px;
+      }
+      
+      svg{
+        border: 1px solid #aaa;
+      }
+      
+      .section{
+        margin-bottom: 20px;
+      }
+    </style>
+    
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Hypermedia and Web Systems: Learning HTML5 SVG</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">About us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div id="commands_div" class="col-sm-2 col-md-2">
+          
+          <h3>Commands</h3>
+          
+          <div class="section">
+            <button id="execute" type="button" class="btn btn-primary">Execute</button>
+            <button id="clear" type="button" class="btn btn-primary">Clear SVG</button>
+          </div>
+          
+          <h3>Drawings</h3>
+          
+          <div class="btn-group-vertical codes">
+            <button id="circle" type="button" class="btn btn-primary pull-right">Circle</button>
+            <button id="text" type="button" class="btn btn-primary pull-right">Hello World</button>
+            <button id="basicshapes" type="button" class="btn btn-primary pull-right">Basic Shapes</button>
+            <button id="transformation" type="button" class="btn btn-primary pull-right">Transformations</button>
+            <button id="reusing" type="button" class="btn btn-primary pull-right">Reusing Content</button>
+            <button id="clipping" type="button" class="btn btn-primary pull-right">Clipping</button>
+            <button id="patterns" type="button" class="btn btn-primary pull-right">Patterns and Gradients</button>
+            <button id="path" type="button" class="btn btn-primary pull-right">Paths</button>
+            <button id="curvepath" type="button" class="btn btn-primary pull-right">Curve Paths</button>
+            <button id="formattext" type="button" class="btn btn-primary pull-right">Formated text</button>
+            <button id="scene" type="button" class="btn btn-primary pull-right">Scene</button>
+          </div>
+          
+                   
+        </div>
+        <div id="svg_div" class="col-sm-5 col-md-5">
+          <h3>SVG</h3>
+          <div id="current_svg">
+            
+          </div>            
+        </div>
+    
+        <div id="code_div" class="col-sm-5 col-md-5">
+          <h3>SVG code</h3>
+          
+          <form>
+            <textarea id="code" name="code"></textarea>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/codemirror/codemirror.js"></script>
+    <script src="js/codemirror/mode/xml/xml.js"></script>
+    <script>
+      var _editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "text/html",
+        lineNumbers: true
+      });
+      
+      function _clear_svg(){
+        $("#current_svg").html("");
+      }
+      
+      $('.codes button').on('click', function(event) {
+        $.get("svg/"+this.id+".svg", function(data){
+          _editor.setValue(data);
+        }, "text");
+                
+      });
+      
+      $('#execute').on('click', function(event) {
+        _clear_svg();
+        $("#current_svg").html(_editor.getValue());
+      });
+      
+      $('#clear').on('click', function(event) {
+        _clear_svg();
+      });
+      
+    </script>
+    
+  </body>
+</html>

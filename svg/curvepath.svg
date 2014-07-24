@@ -1,0 +1,14 @@
+<svg height=250 width=400>
+
+<defs>
+    <pattern id="GravelPattern" patternUnits="userSpaceOnUse" x="0" y="0" width="600" height="600" viewBox="0 0 600 600">
+        <image x="0" y="0" width="600" height="600" xlink:href="images/gravel.jpg"></image>
+    </pattern>
+</defs>
+
+<g transform="translate(-50, 300)" stroke-width="40" stroke="url(#GravelPattern)" stroke-linejoin="round">
+<path d="M0,0 Q170,-50 260, -190 Q310, -250 410,-250" fill="none"></path>
+</g>
+
+</svg>
+

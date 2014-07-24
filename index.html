@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Learning HTML5 Canvas</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+    
+    <link href="css/codemirror.css" rel="stylesheet">
+    
+    <style type="text/css">
+      .CodeMirror {
+        border: 1px solid #aaa;
+        height: 600px;
+      }
+      
+      canvas{
+        border: 1px solid #aaa;
+      }
+      
+      .section{
+        margin-bottom: 20px;
+      }
+    </style>
+    
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Hypermedia and Web Systems: Learning HTML5 Canvas</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">About us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div id="commands_div" class="col-sm-2 col-md-2">
+          
+          <h3>Commands</h3>
+          
+          <div class="section">
+            <button id="execute" type="button" class="btn btn-primary">Execute</button>
+            <button id="clear" type="button" class="btn btn-primary">Clear Canvas</button>
+          </div>
+          
+          <h3>Codes</h3>
+          
+          <div class="btn-group-vertical codes">
+            <button id="helloworld" type="button" class="btn btn-primary pull-right">Hello World</button>
+            <button id="animationtext" type="button" class="btn btn-primary pull-right">Animation Text</button>
+            <button id="code_3" type="button" class="btn btn-primary pull-right">Default</button>
+            <button id="code_4" type="button" class="btn btn-primary pull-right">Default</button>
+            <button id="code_5" type="button" class="btn btn-primary pull-right">Default</button>
+            <button id="code_6" type="button" class="btn btn-primary pull-right">Default</button>
+            <button id="code_7" type="button" class="btn btn-primary pull-right">Default</button>
+            <button id="audio" type="button" class="btn btn-primary pull-right">Audio</button>
+            <button id="audioplayer" type="button" class="btn btn-primary pull-right">Audio Player</button>
+          </div>
+          
+                   
+        </div>
+        <div id="canvas_div" class="col-sm-5 col-md-5">
+                    
+        </div>
+    
+        <div id="code_div" class="col-sm-5 col-md-5">
+          <h3>Canvas code</h3>
+          
+          <form>
+            <textarea id="code" name="code"></textarea>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/codemirror/codemirror.js"></script>
+    <script src="js/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="js/codemirror/addon/comment/continuecomment.js"></script>
+    <script src="js/codemirror/addon/comment/comment.js"></script>
+    <script src="js/codemirror/mode/javascript/javascript.js"></script>
+    <script>
+      var _editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "javascript",
+        lineNumbers: true,
+        matchBrackets: true,
+        continueComments: "Enter",
+        extraKeys: {"Ctrl-Q": "toggleComment"}
+      });
+      
+      var _running = false;
+      
+      function _create_canvas(){
+        var longitude = $("#canvas_div").width();
+        longitude = (longitude>10) ? (longitude-10): longitude;
+        $("#canvas_div").append("<h3>Canvas</h3>");
+        $("#canvas_div").append("<canvas id='canvas' width="+longitude+" height="+longitude+"></canvas>");  
+      }
+      
+      function _clear_canvas(){
+        $("#canvas").remove();
+        $("#canvas_div").html("");
+        _create_canvas();  
+      }
+      
+      function _refresh(){
+        _clear_canvas();
+        if(_running){ jQuery.globalEval(_editor.getValue()); } 
+      }
+      
+      _create_canvas();
+      
+      $('.codes button').on('click', function(event) {
+        //event.preventDefault(); // To prevent following the link (optional)
+        $.get("codes/"+this.id+".js", function(data){
+          _editor.setValue(data);
+        }, "text");
+                
+      });
+      
+      $('#execute').on('click', function(event) {
+        //event.preventDefault(); // To prevent following the link (optional)
+        _clear_canvas();
+        jQuery.globalEval(_editor.getValue());
+        _running = true;
+      });
+      
+      $('#clear').on('click', function(event) {
+        //event.preventDefault(); // To prevent following the link (optional)
+        _clear_canvas();
+        _running = false;
+      });
+      
+      $(window).resize(_refresh);
+      
+    </script>
+    
+  </body>
+</html>
